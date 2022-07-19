@@ -1,17 +1,18 @@
 package com.landvibe.homework;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
 public class Customer {
     private String name;
     private int balance;
-    Vector<Integer> orderList = new Vector();
+    ArrayList<Integer> orderList = new ArrayList<Integer>();
 
     void setOrderList(int id) {
         orderList.add(id);
     }
 
-    Vector getOrderList() {
+    ArrayList getOrderList() {
         return orderList;
     }
 
