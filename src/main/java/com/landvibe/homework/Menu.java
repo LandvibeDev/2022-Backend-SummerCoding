@@ -2,20 +2,20 @@ package com.landvibe.homework;
 
 public class Menu {
 
-    private int OrderNum;
+    private int orderNum;
     private int cost;
     private String name;
 
     Menu(int OrderNum,
          String name,
          int cost) {
-        this.OrderNum = OrderNum;
+        this.orderNum = OrderNum;
         this.cost = cost;
         this.name = name;
     }
 
     public int getOrderNum() {
-        return OrderNum;
+        return orderNum;
     }
 
     public int getCost() {
