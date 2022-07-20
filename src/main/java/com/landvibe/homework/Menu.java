@@ -35,6 +35,6 @@ public class Menu {
     }
 
     public boolean isSameMenu(String numOrName){
-        return (Integer.toString(this.menuNumber).equals(numOrName) || this.name.equals(numOrName)) ? true : false;
+        return (Integer.toString(this.menuNumber).equals(numOrName) || this.name.equals(numOrName));
     }
 }

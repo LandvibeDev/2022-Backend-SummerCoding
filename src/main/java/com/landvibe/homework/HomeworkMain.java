@@ -67,9 +67,9 @@ public class HomeworkMain {
                         System.out.println("주문 내역이 없습니다.");
                         break;
                     }
-                    for (Menu i : orderedList) {
+                    for (Menu menu : orderedList) {
                         System.out.println("이름 : " + myName);
-                        System.out.println("메뉴 : " + i.getName() + " 가격 : " + i.getPrice() + "원");
+                        System.out.println("메뉴 : " + menu.getName() + " 가격 : " + menu.getPrice() + "원");
                     }
                     break;
                 case "4":

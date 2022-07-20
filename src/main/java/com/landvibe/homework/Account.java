@@ -30,7 +30,7 @@ public class Account {
     }
 
     public boolean isPossibleToWithdraw(int price) {
-        return this.account >= price ? true : false;
+        return this.account >= price;
     }
 
     public void withdraw(int price){
