@@ -1,7 +1,6 @@
 package com.landvibe.homework.view;
 
 import com.landvibe.homework.model.Customer;
-import com.landvibe.homework.model.History;
 import com.landvibe.homework.model.Menu;
 import com.landvibe.homework.model.MenuBoard;
 
@@ -49,8 +48,8 @@ public class OutputView {
     }
 
     public static void printOrderHistory(Customer customer) {
-        for (History history : customer.getOrderHistory()) {
-            System.out.println(String.format("이름: %s\n메뉴: %s, 가격 %d원", history.getOrdererName(), history.getMenu().getName(), history.getMenu().getPrice()));
+        for (Menu menu : customer.getOrderHistory()) {
+            System.out.println(String.format("이름: %s\n메뉴: %s, 가격 %d원", customer.getName(), menu.getName(), menu.getPrice()));
         }
     }
 

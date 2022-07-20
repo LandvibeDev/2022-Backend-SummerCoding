@@ -1,11 +1,12 @@
 package com.landvibe.homework.model;
 
+import java.util.List;
 import java.util.ArrayList;
 
 public class Customer {
-    String name;
-    int balance;
-    ArrayList<History> orderHistory;
+    private String name;
+    private int balance;
+    private List<Menu> orderHistory;
 
     public Customer(String name, int balance) {
         this.name = name;
@@ -13,20 +14,16 @@ public class Customer {
         this.orderHistory = new ArrayList<>();
     }
 
-    public ArrayList<History> getOrderHistory() {
+    public List<Menu> getOrderHistory() {
         return orderHistory;
     }
 
-    public void setOrderHistory(History history) {
-        this.orderHistory.add(history);
+    public void setOrderHistory(Menu menu) {
+        this.orderHistory.add(menu);
     }
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public int getBalance() {

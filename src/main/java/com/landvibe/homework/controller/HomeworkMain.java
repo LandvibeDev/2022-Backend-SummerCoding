@@ -1,7 +1,6 @@
 package com.landvibe.homework.controller;
 
 import com.landvibe.homework.model.Customer;
-import com.landvibe.homework.model.History;
 import com.landvibe.homework.model.Menu;
 import com.landvibe.homework.model.MenuBoard;
 import com.landvibe.homework.view.InputView;
@@ -45,11 +44,11 @@ public class HomeworkMain {
             } else if (command.equals("주문하기")) {
                 InputView.askOrderMenu();
                 command = scanner.nextLine();
-                boolean isDigit = command.chars().allMatch(Character::isDigit);
-                if (isDigit) {
-                    OrderByNumber(Integer.parseInt(command), menuBoard, customer); // 번호로 주문하는 경우
+                Menu menu = menuBoard.isExistMenu(command); // 메뉴판에 있는 메뉴인지 확인
+                if (menu == null) {
+                    OutputView.printNoMenu();
                 } else {
-                    OrderByName(command, menuBoard, customer); // 이름으로 주문하는 경우
+                    OrderMenu(customer, menu);
                 }
             } else if (command.equals("주문 내역 보기")) {
                 OutputView.printOrderHistory(customer);
@@ -61,41 +60,18 @@ public class HomeworkMain {
         }
     }
 
-    // OrderBy 메소드는 주문하는 동작은 같고
-    // 번호로 주문하는지, 이름으로 주문하는지에 따라 다른 것이기 때문에
-    // 스트림에 다른 조건을 걸어서 하나로 줄일 수 있는지 생각해보기
-    private static void OrderByNumber(int number, MenuBoard menuBoard, Customer customer) {
-        boolean isExist = menuBoard.isExistNumber(number, menuBoard);
-        if (isExist) {
-            Menu menu = menuBoard.findMenuByNumber(number, menuBoard);
-            OrderMenu(customer, menu);
-        } else {
-            OutputView.printNoMenu();
-        }
-    } // 존재하는 메뉴 번호인지 찾고 주문 가능한 경우 주문
-
-    private static void OrderByName(String name, MenuBoard menuBoard, Customer customer) {
-        boolean isExist = menuBoard.isExistName(name, menuBoard);
-        if (isExist) {
-            Menu menu = menuBoard.findMenuByName(name, menuBoard);
-            OrderMenu(customer, menu);
-        } else {
-            OutputView.printNoMenu();
-        }
-    } // 존재하는 메뉴 이름인지 찾고 주문가능한 경우 주문
-
-    private static boolean isOrder(Customer customer, Menu menu) {
-        return customer.getBalance() - menu.getPrice() >= 0;
+    private static boolean checkBalance(Customer customer, Menu menu) {
+        return customer.getBalance() >= menu.getPrice();
     } // 주문하기 전 잔고 확인
 
-    private static void calculateBalance(Customer customer, Menu menu) {
+    private static void withdrawBalance(Customer customer, Menu menu) {
         customer.setBalance(customer.getBalance() - menu.getPrice());
     } // 잔액 인출
 
     private static void OrderMenu(Customer customer, Menu menu) {
-        if (isOrder(customer, menu)) {
-            calculateBalance(customer, menu);
-            customer.getOrderHistory().add(new History(customer.getName(), menu));
+        if (checkBalance(customer, menu)) {
+            withdrawBalance(customer, menu);
+            customer.setOrderHistory(menu);
         } else {
             OutputView.printNoMoney();
         }
