@@ -1,10 +1,7 @@
 package com.landvibe.summer.reservation.controller;
 
 import com.landvibe.summer.reservation.dto.request.ProductRequest;
-import com.landvibe.summer.reservation.dto.response.ProductDetailResponse;
-import com.landvibe.summer.reservation.dto.response.ProductResponse;
-import com.landvibe.summer.reservation.dto.response.ProductsResponse;
-import com.landvibe.summer.reservation.dto.response.Result;
+import com.landvibe.summer.reservation.dto.response.*;
 import com.landvibe.summer.reservation.entity.Product;
 import com.landvibe.summer.reservation.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +18,10 @@ public class ProductController {
     @ResponseBody
     public ProductResponse create(@RequestBody ProductRequest request) {
         Long productId = productService.join(request);
-        return new ProductResponse(1, new Result(productId));
+        if (productId == -1) {
+            return new ProductResponse(-1);
+        }
+        return new ProductResponse(0, new Result(productId));
     }
 
     @RequestMapping(value = "/api/products", method = RequestMethod.GET)

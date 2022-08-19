@@ -15,5 +15,4 @@ public class Product {
     private String description;
     private Long id;
     private LocalDateTime createdAt;
-
 }
