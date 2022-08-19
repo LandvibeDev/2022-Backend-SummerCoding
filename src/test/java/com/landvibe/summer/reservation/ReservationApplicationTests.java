@@ -1,10 +1,10 @@
-package com.landvibe.summercoding;
+package com.landvibe.summer.reservation;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SummerCodingApplicationTests {
+class ReservationApplicationTests {
 
     @Test
     void contextLoads() {
