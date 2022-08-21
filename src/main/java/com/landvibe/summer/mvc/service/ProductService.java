@@ -5,17 +5,14 @@ import com.landvibe.summer.mvc.entity.Category;
 import com.landvibe.summer.mvc.entity.Product;
 import com.landvibe.summer.mvc.repository.CategoryRepository;
 import com.landvibe.summer.mvc.repository.ProductRepository;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 public class ProductService {
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
-
-    public ProductService(CategoryRepository categoryRepository, ProductRepository productRepository) {
-        this.categoryRepository = categoryRepository;
-        this.productRepository = productRepository;
-    }
 
     public Long register(ProductRequest request) {
         if (getProduct(request)) {

@@ -3,15 +3,13 @@ package com.landvibe.summer.mvc.service;
 import com.landvibe.summer.mvc.dto.request.CategoryRequest;
 import com.landvibe.summer.mvc.entity.Category;
 import com.landvibe.summer.mvc.repository.CategoryRepository;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 public class CategoryService {
     private final CategoryRepository categoryRepository;
-
-    public CategoryService(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
-    }
 
     public Long register(CategoryRequest request) {
         if (getCategory(request)) {
