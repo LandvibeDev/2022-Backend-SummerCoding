@@ -31,8 +31,8 @@ public class CategoryController {
 
     @GetMapping("/categories")
     public CategoriesResponse read() {
-        Integer size = categoryService.getCategories().size();
         List<Category> categories = categoryService.getCategories();
+        Integer size = categories.size();
         return new CategoriesResponse(size, categories);
     }
 }

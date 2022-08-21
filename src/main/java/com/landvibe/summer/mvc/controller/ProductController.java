@@ -32,8 +32,8 @@ public class ProductController {
 
     @GetMapping("/products")
     public ProductsResponse read() {
-        Integer size = productService.getProducts().size();
         List<Product> products = productService.getProducts();
+        Integer size = products.size();
         return new ProductsResponse(size, products);
     }
 
