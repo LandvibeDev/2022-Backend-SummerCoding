@@ -40,9 +40,9 @@ public class ProductService {
         return product;
     }
 
-    private void increaseProductCount(Category categoryOfProduct) {
-        Integer count = categoryOfProduct.getCount();
-        categoryOfProduct.setCount(count + 1);
+    private void increaseProductCount(Category category) {
+        Integer count = category.getCount();
+        category.setCount(count + 1);
     }
 
     private Boolean getProduct(ProductRequest request) {
