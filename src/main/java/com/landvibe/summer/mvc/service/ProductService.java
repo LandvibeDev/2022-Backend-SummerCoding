@@ -15,10 +15,13 @@ public class ProductService {
     private final ProductRepository productRepository;
 
     public Long register(ProductRequest request) {
-        if (getProduct(request)) {
+        if (isExistProduct(request)) {
             return -1L;
         }
-        Category category = findByCategoryId(request.getCategoryId());
+        Category category = categoryRepository.findById(request.getCategoryId()).orElse(null);
+        if(category == null) {
+            throw new IllegalStateException("존재하지 않는 카테고리입니다.");
+        }
         Product product = createProduct(request, category);
         productRepository.save(product);
         increaseProductCount(category);
@@ -42,7 +45,7 @@ public class ProductService {
         category.setCount(count + 1);
     }
 
-    private Boolean getProduct(ProductRequest request) {
+    private Boolean isExistProduct(ProductRequest request) {
         return productRepository.findByName(request.getName())
                 .isPresent();
     }
@@ -54,10 +57,5 @@ public class ProductService {
     public Product findById(Long id) {
         return productRepository.findById(id)
                 .orElseThrow(() -> new IllegalStateException("존재하지 않는 상품입니다."));
-    }
-
-    public Category findByCategoryId(Long categoryId) {
-        return categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new IllegalStateException("존재하지 않는 카테고리입니다."));
     }
 }
