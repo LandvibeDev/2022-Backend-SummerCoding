@@ -14,7 +14,7 @@ public class MemoryProductRepository implements ProductRepository {
     @Override
     public void save(Product product) {
         product.setId(++sequence);
-        product.setCreatedAt(LocalDateTime.now());
+        product.setCreatedAt(LocalDateTime.now().withNano(0));
         productDb.put(product.getId(), product);
     }
 
