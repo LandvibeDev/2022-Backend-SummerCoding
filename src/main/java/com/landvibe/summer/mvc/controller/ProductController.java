@@ -2,6 +2,7 @@ package com.landvibe.summer.mvc.controller;
 
 import com.landvibe.summer.mvc.dto.request.ProductRequest;
 import com.landvibe.summer.mvc.dto.response.ProductDetailResponse;
+import com.landvibe.summer.mvc.dto.response.ProductExceptDescriptionResponse;
 import com.landvibe.summer.mvc.dto.response.ProductResponse;
 import com.landvibe.summer.mvc.dto.response.ProductsResponse;
 import com.landvibe.summer.mvc.entity.Product;
@@ -32,7 +33,7 @@ public class ProductController {
 
     @GetMapping("/products")
     public ProductsResponse read() {
-        List<Product> products = productService.getProducts();
+        List<ProductExceptDescriptionResponse> products = productService.getProducts();
         Integer size = products.size();
         return new ProductsResponse(size, products);
     }
