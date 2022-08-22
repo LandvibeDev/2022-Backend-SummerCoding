@@ -5,13 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Map;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryResponse {
-    private Integer code;
-    private Map<String, Long> result;
+public class GetProductsRes {
+    private Integer size;
+    private List<ProductInfoExceptDescription> products;
 }

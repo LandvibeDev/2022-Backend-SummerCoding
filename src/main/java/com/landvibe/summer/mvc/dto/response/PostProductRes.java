@@ -1,15 +1,17 @@
 package com.landvibe.summer.mvc.dto.response;
 
-import com.landvibe.summer.mvc.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Map;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductDetailResponse {
-    private Product product;
+public class PostProductRes {
+    private Integer code;
+    private Map<String, Long> result;
 }

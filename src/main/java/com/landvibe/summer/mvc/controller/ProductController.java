@@ -1,10 +1,10 @@
 package com.landvibe.summer.mvc.controller;
 
-import com.landvibe.summer.mvc.dto.request.ProductRequest;
-import com.landvibe.summer.mvc.dto.response.ProductDetailResponse;
-import com.landvibe.summer.mvc.dto.response.ProductExceptDescriptionResponse;
-import com.landvibe.summer.mvc.dto.response.ProductResponse;
-import com.landvibe.summer.mvc.dto.response.ProductsResponse;
+import com.landvibe.summer.mvc.dto.request.PostProductReq;
+import com.landvibe.summer.mvc.dto.response.GetProductDetailRes;
+import com.landvibe.summer.mvc.dto.response.ProductInfoExceptDescription;
+import com.landvibe.summer.mvc.dto.response.PostProductRes;
+import com.landvibe.summer.mvc.dto.response.GetProductsRes;
 import com.landvibe.summer.mvc.entity.Product;
 import com.landvibe.summer.mvc.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -21,26 +21,26 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping("/product")
-    public ProductResponse create(@RequestBody ProductRequest request) {
+    public PostProductRes create(@RequestBody PostProductReq request) {
         Long productId = productService.register(request);
         if (productId.equals(-1L)) {
-            return new ProductResponse(-1, null);
+            return new PostProductRes(-1, null);
         }
         Map<String, Long> map = new HashMap<>();
         map.put("id", productId);
-        return new ProductResponse(1, map);
+        return new PostProductRes(1, map);
     }
 
     @GetMapping("/products")
-    public ProductsResponse read() {
-        List<ProductExceptDescriptionResponse> products = productService.getProducts();
+    public GetProductsRes read() {
+        List<ProductInfoExceptDescription> products = productService.getProducts();
         Integer size = products.size();
-        return new ProductsResponse(size, products);
+        return new GetProductsRes(size, products);
     }
 
     @GetMapping("/product")
-    public ProductDetailResponse read(@RequestParam("productId") Long productId) {
+    public GetProductDetailRes read(@RequestParam("productId") Long productId) {
         Product product = productService.findById(productId);
-        return new ProductDetailResponse(product);
+        return new GetProductDetailRes(product);
     }
 }

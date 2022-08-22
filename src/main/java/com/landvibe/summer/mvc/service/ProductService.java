@@ -1,7 +1,7 @@
 package com.landvibe.summer.mvc.service;
 
-import com.landvibe.summer.mvc.dto.request.ProductRequest;
-import com.landvibe.summer.mvc.dto.response.ProductExceptDescriptionResponse;
+import com.landvibe.summer.mvc.dto.request.PostProductReq;
+import com.landvibe.summer.mvc.dto.response.ProductInfoExceptDescription;
 import com.landvibe.summer.mvc.entity.Category;
 import com.landvibe.summer.mvc.entity.Product;
 import com.landvibe.summer.mvc.repository.CategoryRepository;
@@ -16,7 +16,7 @@ public class ProductService {
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
 
-    public Long register(ProductRequest request) {
+    public Long register(PostProductReq request) {
         if (isExistProduct(request)) {
             return -1L;
         }
@@ -31,7 +31,7 @@ public class ProductService {
         return product.getId();
     }
 
-    private Product createProduct(ProductRequest request, Category category) {
+    private Product createProduct(PostProductReq request, Category category) {
         Product product = new Product();
         product.setId(null);
         product.setCategoryId(request.getCategoryId());
@@ -47,18 +47,18 @@ public class ProductService {
         category.setCount(count + 1);
     }
 
-    private Boolean isExistProduct(ProductRequest request) {
+    private Boolean isExistProduct(PostProductReq request) {
         return productRepository.findByName(request.getName())
                 .isPresent();
     }
 
-    public List<ProductExceptDescriptionResponse> getProducts() {
+    public List<ProductInfoExceptDescription> getProducts() {
         List<Product> products = productRepository.findAll();
-        List<ProductExceptDescriptionResponse> productExceptDescriptionResponseList = new ArrayList<>();
+        List<ProductInfoExceptDescription> list = new ArrayList<>();
         for (Product product : products) {
-            productExceptDescriptionResponseList.add(createProductExceptDescriptionResponse(product));
+            list.add(createProductInfoExceptDescription(product));
         }
-        return productExceptDescriptionResponseList;
+        return list;
     }
 
     public Product findById(Long id) {
@@ -66,13 +66,13 @@ public class ProductService {
                 .orElseThrow(() -> new IllegalStateException("존재하지 않는 상품입니다."));
     }
 
-    private ProductExceptDescriptionResponse createProductExceptDescriptionResponse(Product product) {
-        ProductExceptDescriptionResponse productExceptDescriptionResponse = new ProductExceptDescriptionResponse();
-        productExceptDescriptionResponse.setId(product.getId());
-        productExceptDescriptionResponse.setCategoryId(product.getCategoryId());
-        productExceptDescriptionResponse.setCategoryName(product.getCategoryName());
-        productExceptDescriptionResponse.setName(product.getName());
-        productExceptDescriptionResponse.setCreatedAt(product.getCreatedAt());
-        return productExceptDescriptionResponse;
+    private ProductInfoExceptDescription createProductInfoExceptDescription(Product product) {
+        ProductInfoExceptDescription productInfoExceptDescription = new ProductInfoExceptDescription();
+        productInfoExceptDescription.setId(product.getId());
+        productInfoExceptDescription.setCategoryId(product.getCategoryId());
+        productInfoExceptDescription.setCategoryName(product.getCategoryName());
+        productInfoExceptDescription.setName(product.getName());
+        productInfoExceptDescription.setCreatedAt(product.getCreatedAt());
+        return productInfoExceptDescription;
     }
 }

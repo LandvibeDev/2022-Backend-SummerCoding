@@ -1,5 +1,6 @@
 package com.landvibe.summer.mvc.dto.response;
 
+import com.landvibe.summer.mvc.entity.Category;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductsResponse {
+public class GetCategoriesRes {
     private Integer size;
-    private List<ProductExceptDescriptionResponse> products;
+    private List<Category> categories;
 }

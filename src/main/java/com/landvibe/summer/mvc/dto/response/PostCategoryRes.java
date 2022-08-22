@@ -11,7 +11,7 @@ import java.util.Map;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductResponse {
+public class PostCategoryRes {
     private Integer code;
     private Map<String, Long> result;
 }

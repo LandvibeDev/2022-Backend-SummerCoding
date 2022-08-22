@@ -1,6 +1,6 @@
 package com.landvibe.summer.mvc.service;
 
-import com.landvibe.summer.mvc.dto.request.CategoryRequest;
+import com.landvibe.summer.mvc.dto.request.PostCategoryReq;
 import com.landvibe.summer.mvc.entity.Category;
 import com.landvibe.summer.mvc.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +11,7 @@ import java.util.List;
 public class CategoryService {
     private final CategoryRepository categoryRepository;
 
-    public Long register(CategoryRequest request) {
+    public Long register(PostCategoryReq request) {
         if (isExistCategory(request)) {
             return -1L;
         }
@@ -20,11 +20,11 @@ public class CategoryService {
         return category.getId();
     }
 
-    private Category createCategory(CategoryRequest request) {
+    private Category createCategory(PostCategoryReq request) {
         return new Category(null, request.getName(), null);
     }
 
-    private Boolean isExistCategory(CategoryRequest request) {
+    private Boolean isExistCategory(PostCategoryReq request) {
         return categoryRepository.findByName(request.getName())
                 .isPresent();
     }
