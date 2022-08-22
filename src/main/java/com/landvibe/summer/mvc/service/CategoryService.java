@@ -12,7 +12,7 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
 
     public Long register(CategoryRequest request) {
-        if (getCategory(request)) {
+        if (isExistCategory(request)) {
             return -1L;
         }
         Category category = createCategory(request);
@@ -24,7 +24,7 @@ public class CategoryService {
         return new Category(null, request.getName(), null);
     }
 
-    private Boolean getCategory(CategoryRequest request) {
+    private Boolean isExistCategory(CategoryRequest request) {
         return categoryRepository.findByName(request.getName())
                 .isPresent();
     }
