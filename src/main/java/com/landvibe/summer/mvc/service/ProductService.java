@@ -7,10 +7,12 @@ import com.landvibe.summer.mvc.entity.Product;
 import com.landvibe.summer.mvc.repository.CategoryRepository;
 import com.landvibe.summer.mvc.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 @RequiredArgsConstructor
 public class ProductService {
     private final CategoryRepository categoryRepository;

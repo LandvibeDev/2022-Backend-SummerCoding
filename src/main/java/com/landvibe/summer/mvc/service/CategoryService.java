@@ -4,9 +4,11 @@ import com.landvibe.summer.mvc.dto.request.PostCategoryReq;
 import com.landvibe.summer.mvc.entity.Category;
 import com.landvibe.summer.mvc.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 @RequiredArgsConstructor
 public class CategoryService {
     private final CategoryRepository categoryRepository;

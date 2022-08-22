@@ -1,9 +1,11 @@
 package com.landvibe.summer.mvc.repository;
 
 import com.landvibe.summer.mvc.entity.Category;
+import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
+@Repository
 public class MemoryCategoryRepository implements CategoryRepository {
     private static final Map<Long, Category> categories = new HashMap<>();
     private static long sequence = 0L;
