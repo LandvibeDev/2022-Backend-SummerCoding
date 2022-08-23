@@ -10,6 +10,7 @@ import lombok.Setter;
 public class ProductResponse {
     private Integer code;
     private Result result;
+
     public ProductResponse(Integer code) {
         this.code = code;
     }

@@ -33,6 +33,6 @@ public class CategoryController {
     @GetMapping(value = "categories")
     public CategoriesResponse lookUp() {
         List<Category> categories = categoryService.lookUp();
-        return new CategoriesResponse(categories.size(), (ArrayList)categories);
+        return new CategoriesResponse(categories.size(), (ArrayList) categories);
     }
 }
