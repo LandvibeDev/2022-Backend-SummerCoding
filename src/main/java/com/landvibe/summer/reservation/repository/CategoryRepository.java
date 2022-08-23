@@ -15,6 +15,8 @@ public interface CategoryRepository {
 
     Optional<Category> findByName(String name);
 
+    Optional<Category> findById(Long id);
+
     void clearDb();
 
     void plusCategoryCount(Long cateId);

@@ -11,14 +11,17 @@ import com.landvibe.summer.reservation.entity.Category;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping(value = "/api")
 public class CategoryController {
     private final CategoryService categoryService;
 
-    @RequestMapping(value = "/api/category", method = RequestMethod.POST)
+
     @ResponseBody
+    @PostMapping(value = "category")
     public CategoryResponse create(@RequestBody CategoryRequest request) {
         Long categoryId = categoryService.join(request);
         if (categoryId == -1) {
@@ -27,9 +30,9 @@ public class CategoryController {
         return new CategoryResponse(0, new Result(categoryId));
     }
 
-    @RequestMapping(value = "/api/categories", method = RequestMethod.GET)
+    @GetMapping(value = "categories")
     public CategoriesResponse lookUp() {
-        ArrayList<Category> categories = categoryService.lookUp();
-        return new CategoriesResponse(categories.size(), categories);
+        List<Category> categories = categoryService.lookUp();
+        return new CategoriesResponse(categories.size(), (ArrayList)categories);
     }
 }

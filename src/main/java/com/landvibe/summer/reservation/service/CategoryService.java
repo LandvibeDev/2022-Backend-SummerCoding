@@ -40,6 +40,11 @@ public class CategoryService {
                 .orElseThrow(() -> new IllegalStateException("존재하지 않는 카테고리입니다."));
     }
 
+    public Category findById(Long id){
+        return categoryRepository.findById(id)
+                .orElseThrow(() -> new IllegalStateException("존재하지 않는 카테고리입니다."));
+    }
+
     public ArrayList lookUp() {
         return categoryRepository.lookUp();
     }

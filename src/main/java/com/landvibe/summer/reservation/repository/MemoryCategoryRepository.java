@@ -31,6 +31,13 @@ public class MemoryCategoryRepository implements CategoryRepository {
     }
 
     @Override
+    public Optional<Category> findById(Long id) {
+        return db.stream()
+                .filter(product -> id.equals(product.getCateId()))
+                .findAny();
+    }
+
+    @Override
     public void clearDb() {
         db.clear();
     }

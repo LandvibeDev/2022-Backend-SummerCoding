@@ -20,7 +20,12 @@ public class ProductService {
         if (!validateProduct(request)) {
             return -1L;
         }
-        Product newProduct = new Product(request.getCategoryId(), request.getName(), request.getDescription(), null, LocalDateTime.now());
+        Product newProduct = Product.builder()
+                .categoryId(request.getCategoryId())
+                .name(request.getName())
+                .description(request.getDescription())
+                .createdAt(LocalDateTime.now())
+                .build();
         productRepository.save(newProduct);
         categoryRepository.plusCategoryCount(request.getCategoryId());
         return newProduct.getId();

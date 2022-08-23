@@ -1,6 +1,7 @@
 package com.landvibe.summer.reservation.dto.response;
 
 import com.landvibe.summer.reservation.entity.Product;
+import com.landvibe.summer.reservation.entity.ProductDetail;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,5 +10,5 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class ProductDetailResponse {
-    private Product product;
+    private ProductDetail product;
 }
