@@ -22,19 +22,19 @@ public class CategoryController {
     @PostMapping("/category")
     @ResponseBody
     public CategoryResponse create(@RequestBody CategoryRequest request) {
-            Long id = service.create(request);
+        Long id = service.create(request);
 
-            if(id == -1L) {
-                return new CategoryResponse(-1, null);
-            }
+        if(id == -1L) {
+            return new CategoryResponse(-1, null);
+        }
 
-            return new CategoryResponse(0, request);
+        return new CategoryResponse(0, request);
     }
 
     @GetMapping("/categories")
     @ResponseBody
     public CategoriesResponse findAll() {
-        List<Category> categoryList = service.findAll();
+        List<Category> categoryList = service.getCategoryList();
         return new CategoriesResponse(categoryList.size(), categoryList);
     }
 }

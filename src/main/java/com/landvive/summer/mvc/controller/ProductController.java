@@ -17,12 +17,12 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService service;
-    private final CategoryService categoryService;
 
     @PostMapping("/product")
     @ResponseBody
     public ProductResponse create(@RequestBody ProductRequest request) {
-        Long id = service.create(request);
+        Long id = service.postProduct(request);
+
         if(id == -1) {
             return new ProductResponse(-1, null);
         }
@@ -32,7 +32,7 @@ public class ProductController {
     @GetMapping("/products")
     @ResponseBody
     public ProductsResponse findAll() {
-        List<Product> productsList = service.findAll();
+        List<Product> productsList = service.getProductList();
         return new ProductsResponse(productsList.size(), productsList);
     }
 
@@ -41,7 +41,17 @@ public class ProductController {
     public ProductDetailResponse findDetails(@PathVariable ("productId") Long productId) {
 
         Product product = service.findById(productId);
-        Category category = categoryService.findById(product.getCategoryId());
-        return new ProductDetailResponse(product.getId(), product.getCategoryId(), category.getName(), product.getName(),product.getDescription(), product.getCreatedAt());
+        Category category = product.getCategory();
+
+        return ProductDetailResponse.builder()
+                .id(product.getId())
+                .categoryId(category.getId())
+                .categoryName(category.getName())
+                .name(product.getName())
+                .description(product.getDescription())
+                .createdAt(product.getCreatedAt())
+                .build();
+
     }
+
 }
