@@ -1,0 +1,29 @@
+[33mcommit e868169061005fa596588eaa582c07adec61b31e[m[33m ([m[1;36mHEAD -> [m[1;32mk95yong[m[33m, [m[1;31morigin/k95yong[m[33m)[m
+Author: k95yong <k95yong@naver.com>
+Date:   Wed Aug 31 16:54:57 2022 +0900
+
+    Revert "3주차"
+    
+    This reverts commit 31472888dc050b4a9654e9ed701354b3a2ea5bf1.
+
+[33mcommit 31472888dc050b4a9654e9ed701354b3a2ea5bf1[m
+Author: RyongJoon <k95yong@naver.com>
+Date:   Fri Aug 26 22:49:32 2022 +0900
+
+    3주차
+    
+    과제가 늦어서 죄송합니다..
+    
+    MemoryProductRepository에서
+    MemoryCategoryRepository를 참조하는데 이렇게 해도 되는걸까요 ?? 좀 이상한것 같아서
+
+[33mcommit c742825430fde09a0dd3efa2229889382a3ca402[m
+Author: RyongJoon <k95yong@naver.com>
+Date:   Fri Aug 26 22:37:54 2022 +0900
+
+    3주차
+    
+    과제가 늦어서 죄송합니다..
+    
+    MemoryProductRepository에서
+    MemoryCategoryRepository를 참조하는데 이렇게 해도 되는걸까요 ?? 좀 이상한것 같아서
