@@ -16,10 +16,13 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final List<Category> categoryList = new ArrayList<>();
 
+    private Long sequence = 0L;
+
     @Transactional
-    public void saveToDb(Category category){
+    public void saveToDb(Category category) {
         categoryRepository.save(category);
     }
+
     @Transactional
     public Map<Integer, Long> join(CategoryReq categoryReq) {
 
@@ -30,13 +33,14 @@ public class CategoryService {
         //코드를 더 줄이는 방법을 모르겠습니다...
 
         Category category = Category.builder()
+                .id(++sequence)
                 .name(categoryReq.getName())
                 .count(0)
                 .build();
         saveToDb(category);
 
-        Map<Integer, Long> codeAndResult = new HashMap<>(){{
-            put(successCode,category.getId());
+        Map<Integer, Long> codeAndResult = new HashMap<>() {{
+            put(successCode, category.getId());
         }};
         categoryList.add(category);
 
@@ -45,17 +49,18 @@ public class CategoryService {
 
     @Transactional
     public Integer validateDuplicatedCategory(CategoryReq categoryReq) {
-        if (categoryRepository.getReferenceByName(categoryReq.getName())
-                .isPresent())
+        if (categoryRepository.getReferenceByName(categoryReq.getName()).isPresent()) {
+
             return -1;
-        else
+        } else
             return 0;
     }
+
     @Transactional
     public Map<Integer, Long> IsPossiblePost(Integer successCode) {
         if (successCode == -1) {
-            return new HashMap<>(){{
-                put(successCode,null);
+            return new HashMap<>() {{
+                put(successCode, null);
             }};
         }
         return null;
@@ -63,7 +68,7 @@ public class CategoryService {
 
     @Transactional
     public List<Category> getCategoryList() {
-        return categoryRepository.findAll();
+        return categoryList;
     }
 
     @Transactional

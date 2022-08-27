@@ -52,7 +52,7 @@ public class ProductController {
     @GetMapping(value = "/product/{productId}")
     public ProductDetailRes viewProductDetail(@PathVariable("productId") Long id) {
         ProductDetail productDetail = productService.findById(id);
-        Map<String, ProductDetail> product = new HashMap<>(){{
+        Map<String, ProductDetail> product = new HashMap<>() {{
             put("product", productDetail);
         }};
 

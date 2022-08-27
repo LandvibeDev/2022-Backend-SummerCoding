@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product,Long> {
+public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query(value = "select p from Product p where p.name = :name")
     Optional<Product> getReferenceByName(String name);
 }

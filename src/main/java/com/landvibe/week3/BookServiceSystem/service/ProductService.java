@@ -21,6 +21,8 @@ public class ProductService {
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
 
+    private Long sequence = 0L;
+
     private final ProductDetailRepository productDetailRepository;
 
     private final List<Product> productList
@@ -36,6 +38,7 @@ public class ProductService {
     public void saveToDb2(ProductDetail productDetail) {
         productDetailRepository.save(productDetail);
     }
+
     @Transactional
     public Map<Integer, Long> join(ProductReq productReq) {
 
@@ -45,6 +48,7 @@ public class ProductService {
         if (productCodeAndResult1 != null) return productCodeAndResult1;
 
         Product product = Product.builder()
+                .id(++sequence)
                 .categoryId(productReq.getCategoryId())
                 .name(productReq.getName())
                 .createdAt(LocalDateTime.now().withNano(0))
@@ -52,6 +56,7 @@ public class ProductService {
         saveToDb(product);
 
         ProductDetail productDetail = ProductDetail.builder()
+                .id(sequence)
                 .categoryId(productReq.getCategoryId())
                 .categoryName(findCategoryNameById(productReq.getCategoryId()))
                 .name(productReq.getName())
@@ -68,6 +73,7 @@ public class ProductService {
 
         return productCodeAndResult;
     }
+
     @Transactional
     public Integer validateDuplicatedProduct(ProductReq productReq) {
 
@@ -77,8 +83,9 @@ public class ProductService {
         else
             return 0;
     }
+
     @Transactional
-    public  Map<Integer, Long> IsPossiblePost(Integer successCode) {
+    public Map<Integer, Long> IsPossiblePost(Integer successCode) {
         if (successCode == -1) {
             return new HashMap<>() {{
                 put(successCode, null);
@@ -87,30 +94,31 @@ public class ProductService {
         return null;
     }
 
-    @Transactional
-    public String findCategoryNameById(Long id){
+    public String findCategoryNameById(Long id) {
 
         return categoryRepository.getReferenceById(id).getName();
 
     }
 
-    @Transactional
     public ProductDetail findById(Long id) {
 
         return productDetailRepository.getReferenceById(id);
 
     }
-    @Transactional
+
     public void categoryCountIncrement(Product product) {
 
         Category category = categoryRepository.getReferenceById(product.getCategoryId());
         category.setCount(category.getCount() + 1);
 
     }
+
+    @Transactional
     public List<Product> getProductList() {
         return productList;
     }
 
+    @Transactional
     public Integer getProductSize() {
         return productList.size();
     }
