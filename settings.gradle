@@ -1,1 +1,3 @@
-rootProject.name = 'summerCoding'
+rootProject.name = 'NaverBookService'
+include 'project_3week'
+
