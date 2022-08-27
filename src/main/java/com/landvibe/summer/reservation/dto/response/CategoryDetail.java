@@ -1,14 +1,14 @@
 package com.landvibe.summer.reservation.dto.response;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 @AllArgsConstructor
-public class ProductResponse {
-    private Integer code;
-    private Result result;
+@Builder
+public class CategoryDetail {
+    Long id;
+    String name;
+    Integer count;
 }
-

@@ -2,50 +2,55 @@ package com.landvibe.summer.reservation.service;
 
 import com.landvibe.summer.reservation.dto.request.CategoryRequest;
 import com.landvibe.summer.reservation.entity.Category;
-import com.landvibe.summer.reservation.entity.Product;
+import com.landvibe.summer.reservation.dto.response.CategoryDetail;
 import com.landvibe.summer.reservation.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
     private final CategoryRepository categoryRepository;
 
-    public Long join(CategoryRequest request) {
-        if (!validateProduct(request)) {
-            return -1L;
-        }
-        Category newCategory = new Category(request.getName(), null, 0);
-        categoryRepository.save(newCategory);
-        return newCategory.getCateId();
+    @Transactional
+    public void save(Category request) {
+        categoryRepository.save(request);
     }
 
-    public boolean validateProduct(CategoryRequest request) {
-        ArrayList<Category> categories = categoryRepository.lookUp();
-        for (Category category : categories) {
-            if (category.getCateName().equals(request.getName())) {
-                return false;
+    public Long create(CategoryRequest request) {
+        Category category = Category.builder()
+                .cateName(request.getName())
+                .build();
+        validate(category);
+        save(category);
+        return category.getCateId();
+    }
+
+    public List<CategoryDetail> getCategories() {
+        List<Category> categories = categoryRepository.findAll();
+        List<CategoryDetail> cateDetails = new ArrayList<>();
+        for (int i = 0; i < categories.size(); i++) {
+            Category category = categories.get(i);
+            CategoryDetail categoryDetail = CategoryDetail.builder()
+                    .id(category.getCateId())
+                    .name(category.getCateName())
+                    .count(category.size())
+                    .build();
+            cateDetails.add(categoryDetail);
+        }
+        return cateDetails;
+    }
+
+    public void validate(Category category) throws IllegalStateException {
+        List<Category> categories = categoryRepository.findAll();
+        for (int i = 0; i < categories.size(); i++) {
+            if (categories.get(i).getCateName().equals(category.getCateName())) {
+                throw new IllegalStateException("이미 존재하는 카테고리입니다.");
             }
         }
-        return true;
-    }
-
-    public Category findByName(String name) {
-        return categoryRepository.findByName(name)
-                .orElseThrow(() -> new IllegalStateException("존재하지 않는 카테고리입니다."));
-    }
-
-    public Category findById(Long id) {
-        return categoryRepository.findById(id)
-                .orElseThrow(() -> new IllegalStateException("존재하지 않는 카테고리입니다."));
-    }
-
-    public ArrayList lookUp() {
-        return categoryRepository.lookUp();
     }
 }

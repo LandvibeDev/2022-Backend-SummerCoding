@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -13,5 +12,4 @@ public class ProductRequest {
     private Long categoryId;
     private String name;
     private String description;
-    private Long id;
 }
