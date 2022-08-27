@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -24,8 +25,7 @@ public class ProductController {
         Integer successProductCode = -1;
         Map<String, Long> productResult = new HashMap<>();
 
-        Map<Integer, Long> codeAndResult;
-        codeAndResult = productService.join(productReq);
+        Map<Integer, Long> codeAndResult = productService.join(productReq);
 
         for (Integer code : codeAndResult.keySet()) {
             successProductCode = code;
@@ -43,18 +43,19 @@ public class ProductController {
 
         Integer productSize = productService.getProductSize();
 
-        ArrayList<Product> productArrayList
-                = productService.getProductArrayList();
+        List<Product> productList
+                = productService.getProductList();
 
-        return new ProductsRes(productSize, productArrayList);
+        return new ProductsRes(productSize, productList);
     }
 
     @GetMapping(value = "/product/{productId}")
     public ProductDetailRes viewProductDetail(@PathVariable("productId") Long id) {
         ProductDetail productDetail = productService.findById(id);
-        Map<String, ProductDetail> product = new HashMap<>();
+        Map<String, ProductDetail> product = new HashMap<>(){{
+            put("product", productDetail);
+        }};
 
-        product.put("product", productDetail);
 
         return new ProductDetailRes(product);
     }

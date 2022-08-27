@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -21,12 +22,10 @@ public class CategoryController {
 
     @PostMapping("/category")
     public CategoryRes create(@RequestBody CategoryReq categoryReq) {
-
         Integer successCode = -1;
         Map<String, Long> result = new HashMap<>();
 
-        Map<Integer, Long> codeAndResult;
-        codeAndResult = categoryService.join(categoryReq);
+        Map<Integer, Long> codeAndResult = categoryService.join(categoryReq);
 
         for (Integer code : codeAndResult.keySet()) {
             successCode = code;
@@ -44,9 +43,9 @@ public class CategoryController {
 
         Integer categorySize = categoryService.getCategorySize();
 
-        ArrayList<Category> categoryArrayList
-                = categoryService.getCategoryArrayList();
+        List<Category> categoryList
+                = categoryService.getCategoryList();
 
-        return new CategoriesRes(categorySize, categoryArrayList);
+        return new CategoriesRes(categorySize, categoryList);
     }
 }

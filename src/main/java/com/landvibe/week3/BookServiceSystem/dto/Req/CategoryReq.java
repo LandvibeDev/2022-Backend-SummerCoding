@@ -12,4 +12,5 @@ import java.util.Map;
 public class CategoryReq {
 
     private String name;
+
 }

@@ -5,14 +5,14 @@ import com.landvibe.week3.BookServiceSystem.entity.Category;
 import com.landvibe.week3.BookServiceSystem.entity.Product;
 import com.landvibe.week3.BookServiceSystem.entity.ProductDetail;
 import com.landvibe.week3.BookServiceSystem.repository.CategoryRepository;
+import com.landvibe.week3.BookServiceSystem.repository.ProductDetailRepository;
 import com.landvibe.week3.BookServiceSystem.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -21,77 +21,97 @@ public class ProductService {
     private final CategoryRepository categoryRepository;
     private final ProductRepository productRepository;
 
-    private final ArrayList<Product> productArrayList
+    private final ProductDetailRepository productDetailRepository;
+
+    private final List<Product> productList
             = new ArrayList<>();
 
+
+    @Transactional
+    public void saveToDb(Product product) {
+        productRepository.save(product);
+    }
+
+    @Transactional
+    public void saveToDb2(ProductDetail productDetail) {
+        productDetailRepository.save(productDetail);
+    }
+    @Transactional
     public Map<Integer, Long> join(ProductReq productReq) {
 
-        Map<Integer, Long> productCodeAndResult = new HashMap<>();
-
         Integer successCode = validateDuplicatedProduct(productReq);
-        Map<Integer, Long> productCodeAndResult1 = IsPossiblePost(productCodeAndResult, successCode);
 
+        Map<Integer, Long> productCodeAndResult1 = IsPossiblePost(successCode);
         if (productCodeAndResult1 != null) return productCodeAndResult1;
 
-        Product newProduct = new Product(null, productReq.getCategoryId(),
-                productReq.getName(), null);
+        Product product = Product.builder()
+                .categoryId(productReq.getCategoryId())
+                .name(productReq.getName())
+                .createdAt(LocalDateTime.now().withNano(0))
+                .build();
+        saveToDb(product);
 
-        ProductDetail newProductDetail = new ProductDetail(null,
-                productReq.getCategoryId(),
-                categoryRepository.findNameByCategoryId(productReq.getCategoryId())
-                , productReq.getName(),
-                productReq.getDescription(), null);
+        ProductDetail productDetail = ProductDetail.builder()
+                .categoryId(productReq.getCategoryId())
+                .categoryName(findCategoryNameById(productReq.getCategoryId()))
+                .name(productReq.getName())
+                .description(productReq.getDescription())
+                .createdAt(LocalDateTime.now().withNano(0))
+                .build();
+        saveToDb2(productDetail);
 
-
-        productRepository.save(newProduct);
-        productRepository.saveDetail(newProductDetail);
-        productArrayList.add(newProduct);
-        categoryCountIncrement(newProduct);
-
-        productCodeAndResult.put(successCode, newProduct.getId());
-
+        categoryCountIncrement(product);
+        Map<Integer, Long> productCodeAndResult = new HashMap<>() {{
+            put(successCode, product.getId());
+        }};
+        productList.add(product);
 
         return productCodeAndResult;
     }
+    @Transactional
+    public Integer validateDuplicatedProduct(ProductReq productReq) {
 
-    private Integer validateDuplicatedProduct(ProductReq productReq) {
-        Optional<Product> product = productRepository.findByProductName(productReq.getName());
-
-        if (product.isPresent())
+        if (productRepository.getReferenceByName(productReq.getName())
+                .isPresent())
             return -1;
         else
             return 0;
     }
-
-    private Map<Integer, Long> IsPossiblePost(Map<Integer, Long> productCodeAndResult, Integer successCode) {
+    @Transactional
+    public  Map<Integer, Long> IsPossiblePost(Integer successCode) {
         if (successCode == -1) {
-            productCodeAndResult.put(successCode, null);
-            return productCodeAndResult;
+            return new HashMap<>() {{
+                put(successCode, null);
+            }};
         }
         return null;
     }
 
+    @Transactional
+    public String findCategoryNameById(Long id){
 
-    public ProductDetail findById(Long id) {
-        return productRepository.findByProductId(id)
-                .orElseThrow(() -> new IllegalStateException("존재하지 않는 상품ID입니다."));
+        return categoryRepository.getReferenceById(id).getName();
+
     }
 
+    @Transactional
+    public ProductDetail findById(Long id) {
+
+        return productDetailRepository.getReferenceById(id);
+
+    }
+    @Transactional
     public void categoryCountIncrement(Product product) {
 
-        Category category = categoryRepository.findByCategoryId(product
-                        .getCategoryId())
-                .orElseThrow(() -> new IllegalStateException("존재하지 않는 카테고리ID입니다."));
-
+        Category category = categoryRepository.getReferenceById(product.getCategoryId());
         category.setCount(category.getCount() + 1);
 
     }
-
-    public ArrayList<Product> getProductArrayList() {
-        return productArrayList;
+    public List<Product> getProductList() {
+        return productList;
     }
 
     public Integer getProductSize() {
-        return productArrayList.size();
+        return productList.size();
     }
 }
