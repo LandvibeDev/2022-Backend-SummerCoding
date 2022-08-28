@@ -69,12 +69,7 @@ public class ProductService {
 
     @Transactional
     public void updateCount(Category category) {
-        Category updatedCategory = Category.builder()
-                .id(category.getId())
-                .name(category.getName())
-                .count(category.getProducts().size())
-                .build();
-        categoryRepository.save(updatedCategory);
+        category.increaseCount();
     }
 
     @Transactional
