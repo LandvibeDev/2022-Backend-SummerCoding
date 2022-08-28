@@ -40,7 +40,6 @@ public class ProductService {
             return new PostProductRes(-1, null);
         }
         Product product = insertProduct(request, category);
-        updateCount(category);
 
         Map<String, Long> result = new HashMap<>();
         result.put("id", product.getId());
@@ -63,13 +62,11 @@ public class ProductService {
                 .createdAt(LocalDateTime.now().withNano(0))
                 .build();
         save(product);
-        category.addProduct(product);
-        return product;
-    }
 
-    @Transactional
-    public void updateCount(Category category) {
-        category.increaseCount();
+        category.addProduct(product);
+        product.addCategory(category);
+        category.updateCount();
+        return product;
     }
 
     @Transactional
