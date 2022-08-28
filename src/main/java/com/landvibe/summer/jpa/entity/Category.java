@@ -26,6 +26,10 @@ public class Category {
     @OneToMany(mappedBy = "category")
     private List<Product> products;
 
+    public void increaseCount() {
+        this.setCount(this.products.size());
+    }
+
     public void addProduct(Product product) {
         product.setCategory(this);
         getProducts().add(product);
