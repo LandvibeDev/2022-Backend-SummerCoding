@@ -1,10 +1,10 @@
 package com.landvibe.summer.jpa.service;
 
 import com.landvibe.summer.jpa.dto.request.PostProductReq;
-import com.landvibe.summer.jpa.dto.response.GetProductDetailRes;
+import com.landvibe.summer.jpa.dto.response.PostCommonRes;
 import com.landvibe.summer.jpa.dto.response.GetProductsRes;
-import com.landvibe.summer.jpa.dto.response.PostProductRes;
 import com.landvibe.summer.jpa.dto.response.ProductsRes;
+import com.landvibe.summer.jpa.dto.response.GetProductDetailRes;
 import com.landvibe.summer.jpa.entity.Category;
 import com.landvibe.summer.jpa.entity.Product;
 import com.landvibe.summer.jpa.repository.CategoryRepository;
@@ -15,9 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -31,19 +29,16 @@ public class ProductService {
     }
 
     @Transactional
-    public PostProductRes create(PostProductReq request) {
+    public PostCommonRes create(PostProductReq request) {
         Category category = getCategory(request);
         if (category == null) {
             throw new IllegalStateException("존재하지 않는 카테고리입니다.");
         }
         if (isDuplicateName(request)) {
-            return new PostProductRes(-1, null);
+            return new PostCommonRes(-1, null);
         }
         Product product = insertProduct(request, category);
-
-        Map<String, Long> result = new HashMap<>();
-        result.put("id", product.getId());
-        return new PostProductRes(0, result);
+        return new PostCommonRes(0, new PostCommonRes.Result(product.getId()));
     }
 
     @Transactional

@@ -3,7 +3,7 @@ package com.landvibe.summer.jpa.controller;
 import com.landvibe.summer.jpa.dto.request.PostProductReq;
 import com.landvibe.summer.jpa.dto.response.GetProductDetailRes;
 import com.landvibe.summer.jpa.dto.response.GetProductsRes;
-import com.landvibe.summer.jpa.dto.response.PostProductRes;
+import com.landvibe.summer.jpa.dto.response.PostCommonRes;
 import com.landvibe.summer.jpa.entity.Product;
 import com.landvibe.summer.jpa.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,7 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping("/product")
-    public PostProductRes create(@RequestBody PostProductReq request) {
+    public PostCommonRes create(@RequestBody PostProductReq request) {
         return productService.create(request);
     }
 

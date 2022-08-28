@@ -3,7 +3,7 @@ package com.landvibe.summer.jpa.service;
 import com.landvibe.summer.jpa.dto.request.PostCategoryReq;
 import com.landvibe.summer.jpa.dto.response.CategoryRes;
 import com.landvibe.summer.jpa.dto.response.GetCategoriesRes;
-import com.landvibe.summer.jpa.dto.response.PostCategoryRes;
+import com.landvibe.summer.jpa.dto.response.PostCommonRes;
 import com.landvibe.summer.jpa.entity.Category;
 import com.landvibe.summer.jpa.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,9 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -25,14 +23,12 @@ public class CategoryService {
         categoryRepository.save(category);
     }
 
-    public PostCategoryRes create(PostCategoryReq request) {
+    public PostCommonRes create(PostCategoryReq request) {
         if (isDuplicateName(request)) {
-            return new PostCategoryRes(-1, null);
+            return new PostCommonRes(-1, null);
         }
         Category category = insertCategory(request);
-        Map<String, Long> result = new HashMap<>();
-        result.put("id", category.getId());
-        return new PostCategoryRes(0, result);
+        return new PostCommonRes(0, new PostCommonRes.Result(category.getId()));
     }
 
     @Transactional
