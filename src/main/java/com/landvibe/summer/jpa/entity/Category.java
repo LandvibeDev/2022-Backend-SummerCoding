@@ -8,7 +8,6 @@ import javax.persistence.*;
 import java.util.List;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -26,8 +25,8 @@ public class Category {
     @OneToMany(mappedBy = "category")
     private List<Product> products;
 
-    public void increaseCount() {
-        this.setCount(this.products.size());
+    public void updateCount() {
+        this.count = this.products.size();
     }
 
     public void addProduct(Product product) {
