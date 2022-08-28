@@ -35,10 +35,18 @@ public class ProductService {
             throw new IllegalStateException("존재하지 않는 카테고리입니다.");
         }
         if (isDuplicateName(request)) {
-            return new PostCommonRes(-1, null);
+            return PostCommonRes.builder()
+                    .code(-1)
+                    .result(null)
+                    .build();
         }
         Product product = insertProduct(request, category);
-        return new PostCommonRes(0, new PostCommonRes.Result(product.getId()));
+        return PostCommonRes.builder()
+                .code(0)
+                .result(PostCommonRes.Result.builder()
+                        .id(product.getId())
+                        .build())
+                .build();
     }
 
     @Transactional
@@ -74,26 +82,29 @@ public class ProductService {
         List<Product> allProducts = productRepository.findAll();
         List<ProductsRes> products = new ArrayList<>();
         for (Product product : allProducts) {
-            ProductsRes productsRes = new ProductsRes(
-                    product.getId(),
-                    product.getCategoryId(),
-                    product.getName(),
-                    product.getCreatedAt()
-            );
+            ProductsRes productsRes = ProductsRes.builder()
+                    .id(product.getId())
+                    .categoryId(product.getCategoryId())
+                    .name(product.getName())
+                    .createdAt(product.getCreatedAt())
+                    .build();
             products.add(productsRes);
         }
-        return new GetProductsRes(products.size(), products);
+        return GetProductsRes.builder()
+                .size(products.size())
+                .products(products)
+                .build();
     }
 
     public GetProductDetailRes getProductDetail(Product product) {
-        return new GetProductDetailRes(
-                product.getId(),
-                product.getName(),
-                product.getCategoryId(),
-                product.getCategoryName(),
-                product.getDescription(),
-                product.getCreatedAt()
-        );
+        return GetProductDetailRes.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .categoryId(product.getCategoryId())
+                .categoryName(product.getCategoryName())
+                .description(product.getDescription())
+                .createdAt(product.getCreatedAt())
+                .build();
     }
 
     @Transactional

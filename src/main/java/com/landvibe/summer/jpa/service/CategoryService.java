@@ -25,10 +25,18 @@ public class CategoryService {
 
     public PostCommonRes create(PostCategoryReq request) {
         if (isDuplicateName(request)) {
-            return new PostCommonRes(-1, null);
+            return PostCommonRes.builder()
+                    .code(-1)
+                    .result(null)
+                    .build();
         }
         Category category = insertCategory(request);
-        return new PostCommonRes(0, new PostCommonRes.Result(category.getId()));
+        return PostCommonRes.builder()
+                .code(0)
+                .result(PostCommonRes.Result.builder()
+                        .id(category.getId())
+                        .build())
+                .build();
     }
 
     @Transactional
@@ -50,12 +58,15 @@ public class CategoryService {
         List<Category> allCategories = categoryRepository.findAll();
         List<CategoryRes> categories = new ArrayList<>();
         for (Category category : allCategories) {
-            categories.add(new CategoryRes(
-                    category.getId(),
-                    category.getName(),
-                    category.getCount())
-            );
+            categories.add(CategoryRes.builder()
+                    .id(category.getId())
+                    .name(category.getName())
+                    .count(category.getCount())
+                    .build());
         }
-        return new GetCategoriesRes(categories.size(), categories);
+        return GetCategoriesRes.builder()
+                .size(categories.size())
+                .categories(categories)
+                .build();
     }
 }
