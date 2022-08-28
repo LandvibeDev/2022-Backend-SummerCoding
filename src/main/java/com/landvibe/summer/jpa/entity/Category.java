@@ -30,7 +30,6 @@ public class Category {
     }
 
     public void addProduct(Product product) {
-        product.setCategory(this);
-        getProducts().add(product);
+        this.getProducts().add(product);
     }
 }

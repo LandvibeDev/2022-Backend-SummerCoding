@@ -6,7 +6,6 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -27,4 +26,8 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "category")
     private Category category;
+
+    public void mappingCategory(Category category) {
+        this.category = category;
+    }
 }

@@ -64,7 +64,7 @@ public class ProductService {
         save(product);
 
         category.addProduct(product);
-        product.addCategory(category);
+        product.mappingCategory(category);
         category.updateCount();
         return product;
     }
