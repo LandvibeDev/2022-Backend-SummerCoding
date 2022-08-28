@@ -5,13 +5,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Map;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostProductRes {
+public class PostCommonRes {
     private Integer code;
-    private Map<String, Long> result;
+    private Result result;
+
+    @Getter
+    @AllArgsConstructor
+    public static class Result {
+        private Long id;
+    }
 }
