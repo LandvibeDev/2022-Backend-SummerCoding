@@ -26,7 +26,7 @@ public class CategoryService {
     }
 
     public PostCategoryRes create(PostCategoryReq request) {
-        if (existsCategory(request)) {
+        if (isDuplicateName(request)) {
             return new PostCategoryRes(-1, null);
         }
         Category category = insertCategory(request);
@@ -45,7 +45,7 @@ public class CategoryService {
     }
 
     @Transactional
-    public Boolean existsCategory(PostCategoryReq request) {
+    public Boolean isDuplicateName(PostCategoryReq request) {
         return categoryRepository.existsByName(request.getName());
     }
 

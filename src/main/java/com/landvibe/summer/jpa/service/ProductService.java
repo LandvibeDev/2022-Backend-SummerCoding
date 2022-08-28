@@ -36,7 +36,7 @@ public class ProductService {
         if (category == null) {
             throw new IllegalStateException("존재하지 않는 카테고리입니다.");
         }
-        if (existsProduct(request)) {
+        if (isDuplicateName(request)) {
             return new PostProductRes(-1, null);
         }
         Product product = insertProduct(request, category);
@@ -73,7 +73,7 @@ public class ProductService {
     }
 
     @Transactional
-    public Boolean existsProduct(PostProductReq request) {
+    public Boolean isDuplicateName(PostProductReq request) {
         return productRepository.existsByName(request.getName());
     }
 
