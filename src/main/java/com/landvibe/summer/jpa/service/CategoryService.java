@@ -24,12 +24,7 @@ public class CategoryService {
     }
 
     public PostCommonRes create(PostCategoryReq request) {
-        if (isDuplicateName(request)) {
-            return PostCommonRes.builder()
-                    .code(-1)
-                    .result(null)
-                    .build();
-        }
+        validate(request);
         Category category = insertCategory(request);
         return PostCommonRes.builder()
                 .code(0)
@@ -49,11 +44,6 @@ public class CategoryService {
     }
 
     @Transactional
-    public Boolean isDuplicateName(PostCategoryReq request) {
-        return categoryRepository.existsByName(request.getName());
-    }
-
-    @Transactional
     public GetCategoriesRes getCategories() {
         List<Category> allCategories = categoryRepository.findAll();
         List<CategoryRes> categories = new ArrayList<>();
@@ -68,5 +58,12 @@ public class CategoryService {
                 .size(categories.size())
                 .categories(categories)
                 .build();
+    }
+
+    @Transactional
+    public void validate(PostCategoryReq request) {
+        if (categoryRepository.existsByName(request.getName())) {
+            throw new IllegalArgumentException("이미 존재하는 카테고리입니다.");
+        }
     }
 }
