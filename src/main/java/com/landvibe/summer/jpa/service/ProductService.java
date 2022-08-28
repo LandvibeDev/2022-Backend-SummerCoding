@@ -94,7 +94,7 @@ public class ProductService {
         return new GetProductDetailRes(
                 product.getId(),
                 product.getName(),
-                product.getId(),
+                product.getCategoryId(),
                 product.getCategoryName(),
                 product.getDescription(),
                 product.getCreatedAt()
