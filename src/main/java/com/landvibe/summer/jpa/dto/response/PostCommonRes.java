@@ -1,18 +1,16 @@
 package com.landvibe.summer.jpa.dto.response;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
+@Builder
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
 public class PostCommonRes {
     private Integer code;
     private Result result;
 
+    @Builder
     @Getter
-    @AllArgsConstructor
     public static class Result {
         private Long id;
     }

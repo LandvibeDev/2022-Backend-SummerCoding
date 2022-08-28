@@ -1,14 +1,12 @@
 package com.landvibe.summer.jpa.dto.response;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+@Builder
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
 public class ProductsRes {
     private Long id;
     private Long categoryId;
