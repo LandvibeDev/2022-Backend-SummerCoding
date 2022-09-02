@@ -6,60 +6,74 @@ import com.landvibe.week3.BookServiceSystem.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import javax.transaction.Transactional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
-    private final ArrayList<Category> categoryArrayList
-            = new ArrayList<>();
+    private final List<Category> categoryList = new ArrayList<>();
 
+    private Long sequence = 0L;
+
+    @Transactional
+    public void saveToDb(Category category) {
+        categoryRepository.save(category);
+    }
+
+    @Transactional
     public Map<Integer, Long> join(CategoryReq categoryReq) {
 
-        Map<Integer, Long> codeAndResult = new HashMap<>();
-
         Integer successCode = validateDuplicatedCategory(categoryReq);
-        Map<Integer, Long> codeAndResult1 = IsPossiblePost(codeAndResult, successCode);
 
+        Map<Integer, Long> codeAndResult1 = IsPossiblePost(successCode);
         if (codeAndResult1 != null) return codeAndResult1;
+        //코드를 더 줄이는 방법을 모르겠습니다...
 
-        Category newCategory = new Category(null, categoryReq.getName(), 0);
-        categoryRepository.save(newCategory);
-        codeAndResult.put(successCode, newCategory.getId());
-        categoryArrayList.add(newCategory);
+        Category category = Category.builder()
+                .id(++sequence)
+                .name(categoryReq.getName())
+                .count(0)
+                .build();
+        saveToDb(category);
+
+        Map<Integer, Long> codeAndResult = new HashMap<>() {{
+            put(successCode, category.getId());
+        }};
+        categoryList.add(category);
 
         return codeAndResult;
     }
 
+    @Transactional
+    public Integer validateDuplicatedCategory(CategoryReq categoryReq) {
+        if (categoryRepository.getReferenceByName(categoryReq.getName()).isPresent()) {
 
-    private Integer validateDuplicatedCategory(CategoryReq categoryReq) {
-        Optional<Category> category = categoryRepository.findByCategoryName(categoryReq.getName());
-
-        if (category.isPresent())
             return -1;
-        else
+        } else
             return 0;
     }
 
-    private Map<Integer, Long> IsPossiblePost(Map<Integer, Long> codeAndResult, Integer successCode) {
+    @Transactional
+    public Map<Integer, Long> IsPossiblePost(Integer successCode) {
         if (successCode == -1) {
-            codeAndResult.put(successCode, null);
-            return codeAndResult;
+            return new HashMap<>() {{
+                put(successCode, null);
+            }};
         }
         return null;
     }
 
-    public ArrayList<Category> getCategoryArrayList() {
-        return categoryArrayList;
+    @Transactional
+    public List<Category> getCategoryList() {
+        return categoryList;
     }
 
+    @Transactional
     public Integer getCategorySize() {
-        return categoryArrayList.size();
+        return categoryList.size();
     }
 
 }
