@@ -1,24 +1,12 @@
 package com.landvibe.summer.reservation.repository;
 
 import com.landvibe.summer.reservation.entity.Category;
-import com.landvibe.summer.reservation.entity.Product;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
-import java.util.ArrayList;
 import java.util.Optional;
 
-@Repository
-public interface CategoryRepository {
-    Category save(Category category);
-
-    ArrayList lookUp();
-
-    Optional<Category> findByName(String name);
-
-    Optional<Category> findById(Long id);
-
-    void clearDb();
-
-    void plusCategoryCount(Long cateId);
-
+public interface CategoryRepository extends JpaRepository<Category, Long> {
+    @Query(value = "select c from Category c where c.cateId = :categoryId")
+    Optional<Category> getCategory(Long categoryId);
 }
