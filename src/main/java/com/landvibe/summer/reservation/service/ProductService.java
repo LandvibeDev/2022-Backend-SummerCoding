@@ -4,8 +4,11 @@ import com.landvibe.summer.reservation.dto.request.ProductRequest;
 import com.landvibe.summer.reservation.entity.Product;
 import com.landvibe.summer.reservation.dto.response.ProductDetail;
 import com.landvibe.summer.reservation.dto.response.Products;
+import com.landvibe.summer.reservation.entity.User;
 import com.landvibe.summer.reservation.repository.CategoryRepository;
 import com.landvibe.summer.reservation.repository.ProductRepository;
+import com.landvibe.summer.reservation.repository.UserRepository;
+import com.landvibe.summer.reservation.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +23,7 @@ import java.util.List;
 public class ProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public void save(Product product) {
@@ -27,11 +31,14 @@ public class ProductService {
     }
 
     public Long create(ProductRequest request) {
+        String name = SecurityUtil.getCurrentUsername().orElseThrow(() -> new IllegalStateException("user not found"));
+        User user = userRepository.findByName(name).orElseThrow(() -> new IllegalStateException("user not found"));
         Product product = Product.builder()
                 .category(categoryRepository.getCategory(request.getCategoryId()).orElse(null))
                 .name(request.getName())
                 .description(request.getDescription())
                 .createdAt(LocalDateTime.now())
+                .register(user.getName())
                 .build();
         validate(product, request.getCategoryId());
         save(product);
@@ -55,7 +62,7 @@ public class ProductService {
     }
 
     public ProductDetail productDetail(Long productId) {
-        Product product = productRepository.getReferenceById(productId);
+        Product product = productRepository.getById(productId);
         ProductDetail productDetail = ProductDetail.builder()
                 .categoryId(product.getCategory().getCateId())
                 .categoryName(product.getCategory().getCateName())
@@ -65,6 +72,25 @@ public class ProductService {
                 .createdAt(product.getCreatedAt())
                 .build();
         return productDetail;
+    }
+
+    public List<Products> myProducts() {
+        String name = SecurityUtil.getCurrentUsername().orElseThrow(() -> new IllegalStateException("user not found"));
+        User user = userRepository.findByName(name).orElseThrow(() -> new IllegalStateException("user not found"));
+        List<Product> product = productRepository.findAll();
+        List<Products> products = new ArrayList<>();
+        for (Product p : product) {
+            if (p.getRegister().equals(user.getName())) {
+                Products nowPros = Products.builder()
+                        .id(p.getId())
+                        .categoryId(p.getCategory().getCateId())
+                        .name(p.getName())
+                        .createdAt(p.getCreatedAt())
+                        .build();
+                products.add(nowPros);
+            }
+        }
+        return products;
     }
 
     public void validate(Product product, Long categoryId) throws IllegalStateException {

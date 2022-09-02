@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    url: jdbc:mysql://localhost:3306/2022_SummerCoding?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&serverTimezone=Asia/Seoul
+    password: tlacksgml12
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    show-sql: 'true'
+    hibernate:
+      ddl-auto: update
+server:
+  servlet:
+    encoding:
+      force: 'true'
+      charset: UTF-8
+jwt:
+  header: x-access-token
+  secrete: 5f90fa5a3ba78d8f89bf8c3b7e391592ef060330c83cfbd283d21b2225562c37e4f01786695f5bd055f4e5af10d56397d01e17e3ab408fbb99d7413a719d4c21
+  token-validity-in-seconds: 86400

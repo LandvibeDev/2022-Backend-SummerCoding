@@ -21,6 +21,6 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)//PK값 자동 증가
     private Long id;
     private LocalDateTime createdAt;
-
+    private String register;
 
 }
