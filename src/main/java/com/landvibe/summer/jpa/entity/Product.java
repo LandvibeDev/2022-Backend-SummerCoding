@@ -20,6 +20,8 @@ public class Product {
     private Long categoryId;
     @Column(name = "category_name")
     private String categoryName;
+    @Column(name = "seller_name")
+    private String sellerName;
     private String description;
     private LocalDateTime createdAt;
 
