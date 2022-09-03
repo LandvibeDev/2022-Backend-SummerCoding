@@ -51,7 +51,7 @@ public class UserService {
     }
 
     @Transactional
-    public PostUserRes getUserByUserId(String userId) {
+    public PostUserRes getUserInfo(String userId) {
         User user = validate(userId);
         return PostUserRes.builder()
                 .id(user.getId())

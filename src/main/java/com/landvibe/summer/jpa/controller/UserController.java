@@ -19,12 +19,12 @@ public class UserController {
     }
 
     @GetMapping("/user/{userId}")
-    public PostUserRes findUserByName(@PathVariable(value = "userId") String userId) {
-        return userService.getUserByUserId(userId);
+    public PostUserRes findUserInfo(@PathVariable(value = "userId") String userId) {
+        return userService.getUserInfo(userId);
     }
 
     @GetMapping("/my-info")
-    public PostUserRes findMyInfo() {
+    public PostUserRes findMyUserInfo() {
         return userService.getMyInfo();
     }
 
