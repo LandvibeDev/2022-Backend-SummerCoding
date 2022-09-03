@@ -12,6 +12,7 @@ public class GetProductDetailRes {
     private String name;
     private Long categoryId;
     private String categoryName;
+    private String sellerName;
     private String description;
     private LocalDateTime createdAt;
 }
