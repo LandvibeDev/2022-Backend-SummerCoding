@@ -12,7 +12,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
@@ -21,6 +23,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class TokenProvider implements InitializingBean {
+    private static final String AUTHORIZATION_HEADER = "x-access-token";
     private static final String AUTHORITY_KEY = "auth";
     private final String secret;
     private final Long tokenValidityInSeconds;
@@ -52,6 +55,14 @@ public class TokenProvider implements InitializingBean {
                 .signWith(key, SignatureAlgorithm.HS512)
                 .setExpiration(validity)
                 .compact();
+    }
+
+    public String extractToken(HttpServletRequest request) {
+        String token = request.getHeader(AUTHORIZATION_HEADER);
+        if (StringUtils.hasText(token)) {
+            return token;
+        }
+        return null;
     }
 
     public boolean validateToken(String token) {
