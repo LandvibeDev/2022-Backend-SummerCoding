@@ -28,6 +28,10 @@ public class UserService {
 
     @Transactional
     public PostUserRes join(PostUserReq request) {
+        if (validate(request.getUserId()) != null) {
+            throw new IllegalArgumentException("이미 존재하는 사용자입니다.");
+        }
+
         Authority authority = Authority.builder()
                 .authorityName("ROLE_USER")
                 .build();
