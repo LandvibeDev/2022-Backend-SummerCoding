@@ -1,6 +1,7 @@
 package com.landvibe.summer.jpa.controller;
 
 import com.landvibe.summer.jpa.dto.request.PostProductReq;
+import com.landvibe.summer.jpa.dto.response.DeleteProductRes;
 import com.landvibe.summer.jpa.dto.response.GetProductDetailRes;
 import com.landvibe.summer.jpa.dto.response.GetProductsRes;
 import com.landvibe.summer.jpa.dto.response.PostCommonRes;
@@ -29,5 +30,10 @@ public class ProductController {
     public GetProductDetailRes read(@RequestParam("productId") Long productId) {
         Product product = productService.findById(productId);
         return productService.getProductDetail(product);
+    }
+
+    @DeleteMapping("/product")
+    public DeleteProductRes delete(@RequestParam("productId") Long productId){
+        return productService.delete(productId);
     }
 }

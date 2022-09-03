@@ -14,6 +14,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -40,8 +41,29 @@ public class ProductService {
     }
 
     @Transactional
+    public DeleteProductRes delete(Long id) {
+        String userId = getUserId();
+        Product product = findById(id);
+        String productSeller = product.getSellerId();
+        Category category = product.getCategory();
+
+        if (Objects.equals(userId, productSeller)) {
+            productRepository.deleteById(id);
+            category.deleteProduct(product);
+            category.updateCount();
+
+            return DeleteProductRes.builder()
+                    .code(0)
+                    .id(id)
+                    .SellerId(userId)
+                    .build();
+        }
+        throw new RuntimeException("삭제권한이 없습니다.");
+    }
+
+    @Transactional
     public Product insertProduct(PostProductReq request, Category category) {
-        String userId = SecurityUtil.getCurrentUserId().orElseThrow(() -> new IllegalStateException("user not found"));
+        String userId = getUserId();
         Product product = Product.builder()
                 .categoryId(request.getCategoryId())
                 .categoryName(category.getName())
@@ -56,6 +78,11 @@ public class ProductService {
         product.mappingCategory(category);
         category.updateCount();
         return product;
+    }
+
+    private static String getUserId() {
+        return SecurityUtil.getCurrentUserId()
+                .orElseThrow(() -> new IllegalStateException("존재하지 않는 사용자입니다."));
     }
 
     @Transactional

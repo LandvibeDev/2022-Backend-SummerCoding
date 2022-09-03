@@ -32,4 +32,8 @@ public class Category {
     public void addProduct(Product product) {
         this.getProducts().add(product);
     }
+
+    public void deleteProduct(Product product) {
+        this.getProducts().remove(product);
+    }
 }
