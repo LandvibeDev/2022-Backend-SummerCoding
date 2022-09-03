@@ -41,13 +41,13 @@ public class ProductService {
 
     @Transactional
     public Product insertProduct(PostProductReq request, Category category) {
-        String name = SecurityUtil.getCurrentUserId().orElseThrow(() -> new IllegalStateException("user not found"));
+        String userId = SecurityUtil.getCurrentUserId().orElseThrow(() -> new IllegalStateException("user not found"));
         Product product = Product.builder()
                 .categoryId(request.getCategoryId())
                 .categoryName(category.getName())
                 .name(request.getName())
                 .description(request.getDescription())
-                .sellerId(name)
+                .sellerId(userId)
                 .createdAt(LocalDateTime.now().withNano(0))
                 .build();
         save(product);
