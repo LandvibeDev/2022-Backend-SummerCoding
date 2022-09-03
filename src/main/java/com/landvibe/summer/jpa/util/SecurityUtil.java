@@ -7,18 +7,18 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Optional;
 
 public class SecurityUtil {
-    public static Optional<String> getCurrentUsername() {
+    public static Optional<String> getCurrentUserId() {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null) {
             return Optional.empty();
         }
-        String username = null;
+        String userId = null;
         if (authentication.getPrincipal() instanceof UserDetails) {
             UserDetails user = (UserDetails) authentication.getPrincipal();
-            username = user.getUsername();
+            userId = user.getUsername();
         } else if (authentication.getPrincipal() instanceof String) {
-            username = (String) authentication.getPrincipal();
+            userId = (String) authentication.getPrincipal();
         }
-        return Optional.ofNullable(username);
+        return Optional.ofNullable(userId);
     }
 }

@@ -20,8 +20,8 @@ public class Product {
     private Long categoryId;
     @Column(name = "category_name")
     private String categoryName;
-    @Column(name = "seller_name")
-    private String sellerName;
+    @Column(name = "seller_id")
+    private String sellerId;
     private String description;
     private LocalDateTime createdAt;
 

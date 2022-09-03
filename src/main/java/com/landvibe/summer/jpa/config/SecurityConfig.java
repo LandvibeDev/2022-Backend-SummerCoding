@@ -41,7 +41,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/api/signup", "/api/login").permitAll()
                 .antMatchers("/api/category").hasAnyRole("ADMIN")
-                .antMatchers("/api/user/{name}").hasAnyRole("ADMIN")
+                .antMatchers("/api/user/{userId}").hasAnyRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));

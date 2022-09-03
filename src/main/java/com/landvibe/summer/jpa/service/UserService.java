@@ -33,7 +33,7 @@ public class UserService {
                 .build();
 
         User user = User.builder()
-                .name(request.getName())
+                .userId(request.getUserId())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .authorities(Collections.singleton(authority))
                 .build();
@@ -42,36 +42,36 @@ public class UserService {
 
         return PostUserRes.builder()
                 .id(user.getId())
-                .name(user.getName())
+                .userId(user.getUserId())
                 .build();
     }
 
     @Transactional
-    public PostUserRes getUserByName(String name) {
-        User user = validate(name);
+    public PostUserRes getUserByUserId(String userId) {
+        User user = validate(userId);
         return PostUserRes.builder()
                 .id(user.getId())
-                .name(user.getName())
+                .userId(user.getUserId())
                 .build();
     }
 
     @Transactional
     public PostUserRes getMyInfo() {
-        String name = getCurrentUserName();
-        User user = validate(name);
+        String userId = getCurrentUserId();
+        User user = validate(userId);
         return PostUserRes.builder()
                 .id(user.getId())
-                .name(user.getName())
+                .userId(user.getUserId())
                 .build();
     }
 
     @Transactional
     public GetProductsRes getMyProducts() {
-        String name = getCurrentUserName();
+        String userId = getCurrentUserId();
         List<Product> allProducts = productRepository.findAll();
         List<ProductsRes> products = new ArrayList<>();
         for (Product product : allProducts) {
-            if (product.getSellerName().equals(name)) {
+            if (product.getSellerId().equals(userId)) {
                 ProductsRes productsRes = ProductsRes.builder()
                         .id(product.getId())
                         .categoryId(product.getCategoryId())
@@ -88,17 +88,17 @@ public class UserService {
     }
 
     @Transactional
-    public String getCurrentUserName() {
-        String name = SecurityUtil.getCurrentUsername().orElse(null);
-        if (name == null) {
+    public String getCurrentUserId() {
+        String userId = SecurityUtil.getCurrentUserId().orElse(null);
+        if (userId == null) {
             throw new IllegalStateException("존재하지 않는 사용자입니다.");
         }
-        return name;
+        return userId;
     }
 
     @Transactional
-    public User validate(String name) {
-        User user = userRepository.getUserByName(name).orElse(null);
+    public User validate(String userId) {
+        User user = userRepository.getUserByUserId(userId).orElse(null);
         if (user == null) {
             throw new IllegalArgumentException("존재하지 않는 사용자입니다.");
         }

@@ -19,8 +19,8 @@ public class CustomUserDetailService implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findOneWithAuthoritiesByName(username)
+    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+        return userRepository.findOneWithAuthoritiesByUserId(userId)
                 .map(this::createUser)
                 .orElseThrow(() -> new IllegalStateException("user not found"));
     }
@@ -30,7 +30,7 @@ public class CustomUserDetailService implements UserDetailsService {
                 .map(authority -> new SimpleGrantedAuthority(authority.getAuthorityName()))
                 .collect(Collectors.toList());
         return new User(
-                user.getName(),
+                user.getUserId(),
                 user.getPassword(),
                 grantedAuthorityList
         );

@@ -18,9 +18,9 @@ public class UserController {
         return userService.join(request);
     }
 
-    @GetMapping("/user/{name}")
-    public PostUserRes findUserByName(@PathVariable(value = "name") String name) {
-        return userService.getUserByName(name);
+    @GetMapping("/user/{userId}")
+    public PostUserRes findUserByName(@PathVariable(value = "userId") String userId) {
+        return userService.getUserByUserId(userId);
     }
 
     @GetMapping("/my-info")

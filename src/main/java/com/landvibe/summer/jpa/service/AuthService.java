@@ -17,7 +17,7 @@ public class AuthService {
 
     public String login(LoginReq request) {
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(request.getName(), request.getPassword());
+                new UsernamePasswordAuthenticationToken(request.getUserId(), request.getPassword());
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
