@@ -6,6 +6,7 @@ import com.landvibe.summer.jpa.entity.Category;
 import com.landvibe.summer.jpa.entity.Product;
 import com.landvibe.summer.jpa.repository.CategoryRepository;
 import com.landvibe.summer.jpa.repository.ProductRepository;
+import com.landvibe.summer.jpa.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -40,11 +41,13 @@ public class ProductService {
 
     @Transactional
     public Product insertProduct(PostProductReq request, Category category) {
+        String name = SecurityUtil.getCurrentUsername().orElseThrow(() -> new IllegalStateException("user not found"));
         Product product = Product.builder()
                 .categoryId(request.getCategoryId())
                 .categoryName(category.getName())
                 .name(request.getName())
                 .description(request.getDescription())
+                .sellerName(name)
                 .createdAt(LocalDateTime.now().withNano(0))
                 .build();
         save(product);
@@ -80,6 +83,7 @@ public class ProductService {
                 .name(product.getName())
                 .categoryId(product.getCategoryId())
                 .categoryName(product.getCategoryName())
+                .sellerName(product.getSellerName())
                 .description(product.getDescription())
                 .createdAt(product.getCreatedAt())
                 .build();
