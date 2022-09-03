@@ -28,7 +28,7 @@ public class UserService {
 
     @Transactional
     public PostUserRes join(PostUserReq request) {
-        if (validate(request.getUserId()) != null) {
+        if (getUser(request.getUserId()) != null) {
             throw new IllegalArgumentException("이미 존재하는 사용자입니다.");
         }
 
@@ -69,6 +69,14 @@ public class UserService {
                 .build();
     }
 
+    private User validate(String userId) {
+        User user = getUser(userId);
+        if (user == null) {
+            throw new IllegalArgumentException("존재하지 않는 사용자 입니다.");
+        }
+        return user;
+    }
+
     @Transactional
     public GetProductsRes getMyProducts() {
         String userId = getCurrentUserId();
@@ -101,11 +109,7 @@ public class UserService {
     }
 
     @Transactional
-    public User validate(String userId) {
-        User user = userRepository.getUserByUserId(userId).orElse(null);
-        if (user == null) {
-            throw new IllegalArgumentException("존재하지 않는 사용자입니다.");
-        }
-        return user;
+    public User getUser(String userId) {
+        return userRepository.getUserByUserId(userId).orElse(null);
     }
 }
