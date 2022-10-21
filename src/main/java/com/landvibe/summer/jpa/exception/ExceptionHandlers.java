@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class ExceptionHandlers {
-    @ExceptionHandler({IllegalArgumentException.class})
+    @ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class, RuntimeException.class})
     public ResponseEntity<PostCommonRes> handler(Exception e) {
         PostCommonRes postCommonRes = PostCommonRes.builder()
                 .code(-1)
